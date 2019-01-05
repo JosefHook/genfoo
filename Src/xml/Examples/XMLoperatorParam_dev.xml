@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+Josef's input parameters for GenFoo
+
+Under development.
+
+-->
+
+<genfooParams 
+   xmlns="http://gforge.efda-itm.eu/genfoo/1.0/"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+   xsi:schemaLocation="genfoo/Src/xml/parameter_schema.xsd">
+
+  <library>
+<!--   
+<filename>/home/itm/genfoo/xmldev/op_thomas/libXMLDefinedOperator.so</filename>
+-->
+<filename>/home/tjohn/codes/genfoo/Src/xml/Examples/operator.xml</filename>
+<!--   
+<filename>/home/itm/genfoo/xmldev/op_thomas/operator2dORN.xml</filename>
+-->
+  </library>
+
+  <factory select="FEM">
+    <FEM solver="gmres" adaptive="false">
+      <gridSize> 200 20 </gridSize>
+    </FEM>
+    <MonteCarlo solver="Euler" deltaf="false">
+      <nParticles> 1e4 </nParticles>
+    </MonteCarlo>
+  </factory>
+
+  <domain dimensions="2" 
+	  timeBegin="0" timeEnd="3.0" timeStep="1.0e-2">
+    <boundingbox>
+      <minValues> -3 -3 </minValues>
+      <maxValues> 3 3 </maxValues>
+    </boundingbox>
+  </domain>
+
+</genfooParams>
+
+

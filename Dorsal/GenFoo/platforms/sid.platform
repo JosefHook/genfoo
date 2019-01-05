@@ -1,0 +1,19 @@
+# build package for  Debian GNU/Linux 
+
+# Platform specific variables
+default BOOST_DIR=/usr
+
+# Define the packages this platform needs
+PACKAGES=(
+#stann
+#gettext
+#glib2
+#hdf5
+h5part
+#scons
+#boost
+boost-numeric-bindings
+ann
+#scons
+#sprng
+)

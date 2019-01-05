@@ -1,0 +1,56 @@
+#
+#
+# General form of Kolmogorov-Backward equation also known as the dual  Fokker-Planck equation
+#
+# u_t =  - A cdot grad u + 0.5* B B^T grad*grad*u)   )
+# u_T = M(f) the goal function is the inital condition for the dual equation
+#
+# The weak form of kolmogorov backward:
+# 
+# \int  ( u_0 - u_1)/ Delta t v dx =  - \int A u1.dx(0)  * v  dx  + 0.5 \int B^2 u1.dx(0).dx(0) v dx = 
+# The last term:  0.5 \int B^2 u1.dx(0) v ds  - 0.5 \int div( B^2 v) u1.dx(0)  dx =>
+# Dual solution defined on 4 order Lagrange 
+
+# Hermite elements not completely supported
+#V = FiniteElement("HER",triangle) #scalar in R^2 
+#Q = VectorElement("HER",triangle) #vector in R^2
+#T = TensorElement("HER",triangle) #Matrix in R^2
+
+V = FiniteElement("Lagrange",triangle,2) #scalar in R^2
+Q = VectorElement("Lagrange",triangle,2) #vector in R^2
+T = TensorElement("Lagrange",triangle,2) #Matrix in R^2
+
+
+u = TrialFunction(V)
+u0 = Coefficient(V)
+v = TestFunction(V)
+A = Coefficient(Q)
+B = Coefficient(T)
+
+dt = Constant(triangle)
+
+
+# Time step discretization is Crank Nicholson:  u_n+1 - u_n / Dt = 0.5( F_n+1 -F_n)
+# 2012-05-07: Verify that the scheme below is correct: I just wrote it down in five minutes
+# using dimenionsal analysis.
+
+# Normal adjoint
+#a = v*u*dx + 0.5*(   dt*dot(A, grad(u))*v*dx + 0.5*dt*dot(div(B*B.T)*v + dot(B*B.T, grad(v)), grad(u))*dx  ) 
+#L = v*u0*dx - 0.5*(  dt*dot(A, grad(u0))*v*dx + 0.5*dt*dot(div(B*B.T)*v+ dot(B*B.T, grad(v)), grad(u0))*dx  )
+
+
+aPDE = v*u*dx + 0.5*(   -dt*dot(A*u,grad(v))*dx +  dt*( dot(u*dot(B,div(B)),grad(v)) + 0.5*dot(dot(B*B.T,grad(u)),grad(v))  )*dx    )
+
+LPDE = v*u0*dx - 0.5*(  -dt*dot(A*u0,grad(v))*dx +  dt*( dot(u0*dot(B,div(B)),grad(v)) + 0.5*dot(dot(B*B.T,grad(u0)),grad(v))  )*dx )
+
+ 
+a = adjoint(aPDE) # The transpose of the Fokker-Planck euqation is the adjoint. 
+L = LPDE
+
+
+
+
+
+# Compare above agains the Fokker-Planck form below
+#a = v*u*dx + 0.5*(   -dt*dot(A*u,grad(v))*dx +  dt*( dot(u*dot(B,div(B)),grad(v)) + 0.5*dot(dot(B*B.T,grad(u)),grad(v))  )*dx    )
+#L = v*u0*dx - 0.5*(  -dt*dot(A*u0,grad(v))*dx +  dt*( dot(u0*dot(B,div(B)),grad(v)) + 0.5*dot(dot(B*B.T,grad(u0)),grad(v))  )*dx )

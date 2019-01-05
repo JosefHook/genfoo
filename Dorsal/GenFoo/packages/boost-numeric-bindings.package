@@ -1,0 +1,11 @@
+NAME=boost-numeric-bindings-20081116
+SOURCE=http://mathema.tician.de/news.tiker.net/download/software/boost-numeric-bindings/
+PACKING=.tar.gz
+BUILDCHAIN=autotools
+EXTRACTSTO=boost-numeric-bindings
+CLEANBUILD=yes
+
+
+package_specific_setup () {
+    ./configure  --prefix=${INSTALL_PATH}
+}

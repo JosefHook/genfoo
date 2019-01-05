@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<Operator> 
+
+
+<Private>
+       <variable type="double" static="true" const="true">
+          <documentation> Kappa parameter</documentation>
+          <name> kappa </name>
+	  <value> 9.0 </value>
+	  <unit> 1 </unit>
+       </variable>
+</Private>
+
+    <Dimensions>
+	    2
+    </Dimensions>
+
+    <Drift>
+	<component index="0">
+		<value>   -2.0*(x[0]-1.5)</value>
+	</component>
+	<component index="1">
+		<value>   -2.0*(x[1]-1.5)</value>
+	</component>
+    </Drift>
+
+    <Diffusion>
+      <code> 
+	int foo = 1.0;
+	</code>
+	<component indexColumn="0" indexRow="0">
+                <!-- the option diffusion  -->
+		<value> 2.0*kappa </value>
+	</component>
+	<component indexColumn="1" indexRow="1"> <!-- the volatility diffusion -->
+		<value> 2.0*kappa </value>
+	</component>
+    </Diffusion>
+
+    <Source>
+      <value>0.0</value>
+    </Source>
+    <!-- We need to model a dirac in s_0 , v_0 as a gaussian -->
+    <!-- FEniCS support dirac sources but the Monte carlo factory does not -->
+    <InitialCondition>
+      <value>
+      20.0*1/(2.0*M_PI)*sqrt(1/(2.0*M_PI))*exp(-( (x[0]-0.0)
+      *(x[0]-0.0) + (x[1]-0.0)*(x[1]-0.0) )/0.2 )
+      </value>
+    </InitialCondition>
+
+</Operator>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema 
+   xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   elementFormDefault="qualified">
+
+  <!-- Programming languages -->
+  <xs:simpleType name="programmingLanguageType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="c++"/>
+      <xs:enumeration value="cpp"/>
+      <xs:enumeration value="c"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- Alternative measure techniques to generate output -->
+  <xs:simpleType name="integralTypes">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="contraction"/>
+      <xs:enumeration value="cumulative"/>
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="integerList">
+    <xs:list itemType="xs:integer"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="floatList">
+    <xs:list itemType="xs:float"/>
+  </xs:simpleType>
+
+  <!-- 
+  ============================================================
+  Main template: 
+  Defining the structure for GenFoo output specifications
+  ============================================================
+  -->
+  <xs:element name="GenFooOutputSpecification">
+    <xs:annotation>
+      <xs:documentation>
+GenFoo output specifications
+/author Josef Hook and Thomas Johnson
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+
+	<xs:element name="include" type="xs:string" minOccurs="0" maxOccurs="unbounded">
+	  <xs:annotation>
+	    <xs:documentation>Include library</xs:documentation>
+	  </xs:annotation>
+	</xs:element>
+
+	<xs:element name="integralMeasure" minOccurs="0" maxOccurs="unbounded">
+	  <xs:annotation>
+	    <xs:documentation>Weighted integral measures of the solution to the diffusion/Fokker-Planck equation solved by GenFoo</xs:documentation>
+	  </xs:annotation>
+	  <xs:complexType>
+	    <xs:all>
+	      <xs:element name="documentation" type="xs:string" minOccurs="0">
+		<xs:annotation>
+		  <xs:documentation>Documentation of the integral measure</xs:documentation>
+		</xs:annotation>
+	      </xs:element>
+	      <xs:element name="geometry" minOccurs="1">
+		<xs:annotation>
+		  <xs:documentation>Geometry of the integration</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+		  <xs:all>
+		    <xs:element name="dimensions" type="integerList" minOccurs="1"/>
+		    <xs:element name="gridSize" type="integerList" minOccurs="0"/>
+		    <xs:element name="minValue" type="floatList" minOccurs="0"/>
+		    <xs:element name="maxValue" type="floatList" minOccurs="0"/>
+		  </xs:all>
+		  <xs:attribute name="fileName" use="optional"/>
+		</xs:complexType>
+	      </xs:element>
+
+	      <xs:element name="kernelCode" type="xs:string" minOccurs="0">
+		<xs:annotation>
+		  <xs:documentation>Code of the kernel method. Should fill the value of the output pointer val[0].</xs:documentation>
+		</xs:annotation>
+	      </xs:element>
+
+	    </xs:all>
+	    <xs:attribute name="name" type="xs:string" use="required"/>
+	    <xs:attribute name="type" type="integralTypes" use="optional" default="contraction"/>
+	  </xs:complexType>
+	</xs:element>
+
+      </xs:sequence>
+      <xs:attribute name="programmingLanguage" type="programmingLanguageType" use="optional" default="c++"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
+

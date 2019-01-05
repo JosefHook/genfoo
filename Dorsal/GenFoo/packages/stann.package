@@ -1,0 +1,17 @@
+NAME=STANN_0.72
+SOURCE=http://compgeom.com/%7Estann/release/
+PACKING=.tar.gz
+EXTRACTSTO=STANN
+BUILDCHAIN=custom
+#CLEANBUILD=yes
+
+
+
+
+package_specific_install () {
+ mkdir ${INSTALL_PATH}/include/stann
+ cp include/*.hpp ${INSTALL_PATH}/include/stann
+
+}
+
+

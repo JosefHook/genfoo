@@ -1,0 +1,41 @@
+#
+# General form of Kolmogorov-Backward equation also known as the dual  Fokker-Planck equation
+#
+# u_t =  - A cdot grad u + 0.5* B B^T grad*grad*u)   )
+# u_T = M(f) the goal function is the inital condition for the dual equation
+#
+# The weak form of kolmogorov backward:
+# 
+# \int  ( u_0 - u_1)/ Delta t v dx =  - \int A u1.dx(0)  * v  dx  + 0.5 \int B^2 u1.dx(0).dx(0) v dx = 
+# The last term:  0.5 \int B^2 u1.dx(0) v ds  - 0.5 \int  d/dx ( B^2 v)  u1.dx(0)  dx =>
+#  -0.5 \int ( 2*B*B.dx(0) *v + B^2 *v.dx(0) ) * u1.dx(0)  dx
+V = FiniteElement("Lagrange",interval,2) #scalar in R^1
+
+u = TrialFunction(V)
+u0 = Coefficient(V)
+v = TestFunction(V)
+A = Coefficient(V)
+B = Coefficient(V)
+
+dt = Constant(interval)
+
+
+
+# Drift term
+# -A*u
+
+# Diffusion term
+# 0.5*div(B^2*u) =  B.div(B)*u + 0.5*B^TB.grad(u)
+
+#
+# The 1D version could not handle the general variational form:
+# 
+# Time step discretization is Crank Nicholson
+a = v*u*dx + 0.5*(   -dt*A*u.dx(0)*v*dx  - 0.5*dt*2*B*B.dx(0)*v*u.dx(0)*dx + 0.5*dt*B*B*v.dx(0)*u.dx(0)*dx  ) 
+L = v*u0*dx - 0.5*(  -dt*A*u0.dx(0)*v*dx - 0.5*dt*2*B*B.dx(0)*v*u0.dx(0)*dx + 0.5*dt*B*B*v.dx(0)*u0.dx(0)*dx  )
+
+#  
+# Compare above with The Form for the Fokker-Planck equation below:
+#a = v*u*dx + 0.5*dt (   -A*u*v.dx(0)*dx +  ( u*B*B.dx(0)*v.dx(0) + 0.5*B*B*u.dx(0)*v.dx(0) )*dx )
+#L = v*u0*dx - 0.5*dt(   -A*u0*v.dx(0)*dx +  ( u0*B*B.dx(0)*v.dx(0) + 0.5*B*B*u0.dx(0)*v.dx(0) )*dx )
+

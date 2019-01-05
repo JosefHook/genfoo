@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<Operator> 
+
+    <Private>
+       <variable type="double" static="true" const="true">
+          <documentation> Kappa parameter</documentation>
+          <name> kappa </name>
+	  <value> 1 </value>
+	  <unit> 1 </unit>
+       </variable>
+       <variable type="double" static="true" const="true">
+          <documentation>Theta parameter</documentation>
+          <name> theta </name>
+	  <value> 1 </value>
+	  <unit> 1</unit>
+       </variable>
+       <variable type="double" static="true" const="true">
+          <documentation> Xi parameter</documentation>
+          <name> xi </name>
+	  <value>1.0 </value>
+	  <unit> 1 </unit>
+       </variable>
+       <variable type="double" static="true" const="true">
+          <documentation> R parameter</documentation>
+          <name> r </name>
+          <value> 1.0 </value>
+          <unit> 1 </unit>
+       </variable>
+       <variable type="double" static="true" const="true">
+          <documentation> D parameter</documentation>
+          <name> d </name>
+          <value> 0.2 </value>
+          <unit> 1 </unit>
+       </variable>
+    </Private>
+
+
+    <Dimensions>
+	    2
+    </Dimensions>
+
+    <Drift>
+	<component index="0">
+                <!-- the option -->
+		<value> (r-d)*x[0] </value>
+	</component>
+	<component index="1">
+                <!-- the volatility -->
+		<value> kappa*(theta-x[1]) </value>
+	</component>
+    </Drift>
+
+    <Diffusion>
+	<component indexColumn="0" indexRow="0" >
+                <!-- the option diffusion  -->
+		<value> sqrt(x[1])*x[0] </value>
+	</component>
+	<component indexColumn="1" indexRow="1"> 
+	  <!-- the volatility diffusion -->
+	  <value> xi*sqrt(abs(x[1])) </value>
+	</component>
+    </Diffusion>
+
+    <Source>
+      <value>      0.0 </value>
+    </Source>
+    <!-- We need to model a dirac in s_0 , v_0 as a gaussian -->
+    <!-- FEniCS support dirac sources but the Monte carlo factory does not -->
+    <InitialCondition>
+      <value>  1/(2.0*M_PI)*sqrt(1/(2.0*M_PI))*exp(-( std::pow((x[0]-5.0),2) + 
+      std::pow((x[1]-5.0),2) ))/0.2 </value>
+    </InitialCondition>
+</Operator>

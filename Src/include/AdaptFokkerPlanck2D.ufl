@@ -1,0 +1,36 @@
+#
+# General form for the Fokker-Planck equation
+#
+# u_t = div(  - A*u + 0.5* div(B^2*u)   )
+# Compile with: ffc -l dolfin -e AdaptFokkerPlanck2D.ufl
+#
+#
+
+V = FiniteElement("Lagrange",triangle,2) #scalar in R^3 
+Q = VectorElement("Lagrange",triangle,2) #vector in R^3
+T = TensorElement("Lagrange",triangle,2) #Matrix in R^3
+
+u = TrialFunction(V)
+u0 = Coefficient(V)
+v = TestFunction(V)
+A = Coefficient(Q)
+B = Coefficient(T)
+
+dt = Constant(triangle)
+print "Rank of B", B.rank()
+print "Rank of u", u.rank()
+
+
+# Drift term
+# -A*u
+
+# Diffusion term
+# 0.5*div(B^2*u) =  B.div(B)*u + 0.5*B^TB.grad(u)
+# 2010-10-05
+# Changed diffusion term to Cholesky form sigma^2 = BB^T
+
+a = v*u*dx + 0.5*(   -dt*dot(A*u,grad(v))*dx +  dt*( dot(u*dot(B,div(B)),grad(v)) + 0.5*dot(dot(B*B.T,grad(u)),grad(v))  )*dx    )
+
+L = v*u0*dx - 0.5*(  -dt*dot(A*u0,grad(v))*dx +  dt*( dot(u0*dot(B,div(B)),grad(v)) + 0.5*dot(dot(B*B.T,grad(u0)),grad(v))  )*dx )
+# Goal function to minimize
+M = u*dx

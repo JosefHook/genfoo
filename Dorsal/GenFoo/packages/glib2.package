@@ -1,0 +1,11 @@
+NAME=glib-2.25.17
+SOURCE=http://ftp.gnome.org/pub/gnome/sources/glib/2.25/
+PACKING=.tar.gz
+BUILDCHAIN=autotools
+CLEANBUILD=yes
+
+
+package_specific_setup () {
+    ./configure --enable-static=glib --prefix=${INSTALL_PATH}
+}
+

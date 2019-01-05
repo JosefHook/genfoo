@@ -1,0 +1,9 @@
+#
+# Calculate moments of the distribution function \int K(x) f(x) dx
+#
+V = FiniteElement("Lagrange",interval,2) #scalar in R^2
+
+f = Coefficient(V)
+K = Coefficient(V)
+
+L = K*f*dx

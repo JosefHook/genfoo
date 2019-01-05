@@ -1,0 +1,10 @@
+NAME=sprng4
+SOURCE=http://sprng.cs.fsu.edu/Version4.0/
+PACKING=.tar.gz
+BUILDCHAIN=autotools
+CLEANBUILD=yes
+
+
+package_specific_setup () {
+    ./configure  --prefix=${INSTALL_PATH}
+}

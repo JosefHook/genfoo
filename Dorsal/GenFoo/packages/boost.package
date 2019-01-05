@@ -1,0 +1,13 @@
+NAME=boost_1_43_0
+SOURCE=http://downloads.sourceforge.net/boost/
+PACKING=.tar.bz2
+BUILDCHAIN=custom
+
+package_specific_build () {
+    ./bootstrap.sh --prefix=${INSTALL_PATH}
+    ./bjam --without-mpi install
+}
+
+package_specific_register () {
+    export BOOST_DIR=${INSTALL_PATH}
+}

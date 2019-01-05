@@ -1,0 +1,20 @@
+NAME=ann_1.1.2
+SOURCE=http://www.cs.umd.edu/~mount/ANN/Files/1.1.2/
+PACKING=.tar.gz
+EXTRACTSTO=ann_1.1.2
+BUILDCHAIN=custom
+#CLEANBUILD=yes
+
+
+
+
+package_specific_install () {
+
+make linux-g++
+cp lib/libANN.a ${INSTALL_PATH}/lib 
+cp -R include/* ${INSTALL_PATH}/include
+
+
+}
+
+

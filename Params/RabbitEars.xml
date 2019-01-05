@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+Josef's input parameters for GenFoo
+
+Under development.
+
+-->
+
+<genfooParams 
+   xmlns="http://gforge.efda-itm.eu/genfoo/1.0/"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+   xsi:schemaLocation="http://gforge.efda-itm.eu/genfoo/1.0/ thomas_param_alt2.xsd">
+
+
+  <library>
+ <filename>../Operators/XML/RabbitEarsModel.xml</filename>
+  </library>
+
+  <factory>
+    <select>FEM</select>
+    <FEM>
+      <gridSize> 100 20 </gridSize>
+      <solver>   gmres  </solver>
+    </FEM>
+    <AFEM>
+      <gridSize> 20 20 </gridSize>
+      <solver>   gmres   </solver>
+    </AFEM>
+    <MonteCarlo>
+      <nParticles> 1e4     </nParticles>
+      <solver>     Euler   </solver>
+    </MonteCarlo>
+    <DeltaFMonteCarlo>
+      <nParticles> 1e4     </nParticles>
+      <solver>     Euler   </solver>
+    </DeltaFMonteCarlo>
+  </factory>
+
+  <domain>
+    <timeBegin>0</timeBegin>
+    <timeEnd>    0.1      </timeEnd>
+    <dt>         2.0e-4 </dt>
+    <dimensions> 2      </dimensions>
+    <boundingbox>
+      <minValues>1e-3 -0.99999 </minValues>
+      <maxValues>8  0.99999</maxValues>
+    </boundingbox>
+  </domain>
+
+</genfooParams>
+
+

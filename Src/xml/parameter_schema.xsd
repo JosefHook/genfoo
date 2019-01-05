@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+Defines the input xml-structure for GenFoo input.
+
+Version:
+$Id: itm_types.xml 500 2011-12-12 14:21:27Z tjohn
+-->
+<xs:schema 
+    xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+    xmlns="http://gforge.efda-itm.eu/genfoo/1.0/" 
+    targetNamespace="http://gforge.efda-itm.eu/genfoo/1.0/"
+    elementFormDefault="qualified">
+    
+    <!-- Simple-type definitions -->
+    <xs:simpleType name="FloatPositive">
+      <xs:restriction base="xs:float">
+         <xs:minExclusive value="0.0"/>
+      </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="FloatList">
+      <xs:list itemType="xs:float"/>
+    </xs:simpleType>
+
+    <xs:simpleType name="IntList">
+      <xs:list itemType="xs:integer"/>
+    </xs:simpleType>
+
+    <!-- Input so-library -->
+    <xs:complexType name="libraryType">
+      <xs:annotation>
+	<xs:documentation>Library...</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+	<xs:element name="filename" type="xs:string">
+	  <xs:annotation>
+	    <xs:documentation>File name</xs:documentation>
+	  </xs:annotation>
+	</xs:element>
+      </xs:sequence>
+    </xs:complexType>
+
+
+    <!-- Factories -->
+    <xs:complexType name="factoryType">
+      <xs:annotation>
+	<xs:documentation>Factories...</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+
+	<xs:element name="select" type="xs:string">
+	  <xs:annotation>
+	    <xs:documentation>Select factory</xs:documentation>
+	  </xs:annotation>
+	</xs:element>
+   
+	<xs:element name="FEM">
+	  <xs:annotation>
+	    <xs:documentation>Finite Element Factory</xs:documentation>
+	  </xs:annotation>
+	  <xs:complexType>
+	    <xs:sequence>
+	      <xs:element name="gridSize" type="IntList">
+		<xs:annotation>
+		  <xs:documentation>Number of grid points in each dimension (rectabgular grid).</xs:documentation>
+		</xs:annotation>
+	      </xs:element>  
+	      <xs:element name="solver" type="xs:string">
+		<xs:annotation>
+		  <xs:documentation>Finite Element solver</xs:documentation>
+		</xs:annotation>
+	      </xs:element>
+	    </xs:sequence>
+	  </xs:complexType>
+	</xs:element>
+
+
+  
+	<xs:element name="AFEM">
+	  <xs:annotation>
+	    <xs:documentation>Adaptive Finite Element Factory</xs:documentation>
+	  </xs:annotation>
+	  <xs:complexType>
+	    <xs:sequence>
+	      <xs:element name="gridSize" type="IntList">
+		<xs:annotation>
+		  <xs:documentation>Number of grid points in each dimension (rectabgular grid).</xs:documentation>
+		</xs:annotation>
+	      </xs:element>  
+	      <xs:element name="solver" type="xs:string">
+		<xs:annotation>
+		  <xs:documentation>Adaptive Finite Element solver</xs:documentation>
+		</xs:annotation>
+	      </xs:element>
+	    </xs:sequence>
+	  </xs:complexType>
+	</xs:element>
+
+
+	<xs:element name="MonteCarlo">
+	  <xs:annotation>
+	    <xs:documentation>Monte Carlo Factory</xs:documentation>
+	  </xs:annotation>
+	  <xs:complexType>
+	    <xs:sequence>
+	      <xs:element name="nParticles" type="FloatPositive">
+		<xs:annotation>
+		  <xs:documentation>Number of Monte Carlo test particles (markers)</xs:documentation>
+		</xs:annotation>
+	      </xs:element>
+	      <xs:element name="solver" type="xs:string">
+		<xs:annotation>
+		  <xs:documentation>Method for Monte Carlo time stepping</xs:documentation>
+		</xs:annotation>
+	      </xs:element>
+	    </xs:sequence>
+	  </xs:complexType>
+	</xs:element>
+      
+
+	<xs:element name="DeltaFMonteCarlo">
+	  <xs:annotation>
+	    <xs:documentation>DeltaF Monte Carlo Factory</xs:documentation>
+	  </xs:annotation>
+	  <xs:complexType>
+	    <xs:sequence>
+	      <xs:element name="nParticles" type="FloatPositive">
+		<xs:annotation>
+		  <xs:documentation>Number of Monte Carlo test particles (markers)</xs:documentation>
+		</xs:annotation>
+	      </xs:element>
+	      <xs:element name="solver" type="xs:string">
+		<xs:annotation>
+		  <xs:documentation>Method for Monte Carlo time stepping</xs:documentation>
+		</xs:annotation>
+	      </xs:element>
+	    </xs:sequence>
+	  </xs:complexType>
+	</xs:element>
+
+
+      </xs:sequence>
+    </xs:complexType>
+
+    <!--  Bounding box -->
+    <xs:complexType name="boundingboxType">
+      <xs:annotation>
+	<xs:documentation>Bounding box for the simulation domain.</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+	<xs:element name="minValues" type="FloatList">
+	  <xs:annotation>
+	    <xs:documentation>Lower boundaries of the simulation domain.</xs:documentation>
+	  </xs:annotation>
+	</xs:element>
+	<xs:element name="maxValues" type="FloatList">
+	  <xs:annotation>
+	    <xs:documentation>Upper boundaries of the simulation domain.</xs:documentation>
+	  </xs:annotation>
+	</xs:element>
+      </xs:sequence>
+    </xs:complexType>
+
+    <!-- Domain -->
+    <xs:complexType name="domainType">
+      <xs:annotation>
+	<xs:documentation>The domain of the computation.</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+	<xs:element name="timeBegin" type="xs:float">
+	  <xs:annotation>
+	    <xs:documentation>Time at the beginning of the simulation (s).</xs:documentation>
+	  </xs:annotation>
+	</xs:element>
+	<xs:element name="timeEnd" type="xs:float">
+	  <xs:annotation>
+	    <xs:documentation>Time at the end of the simulation (s).</xs:documentation>
+	  </xs:annotation>
+	</xs:element>
+	<xs:element name="dt" type="xs:float">
+	  <xs:annotation>
+	    <xs:documentation>Length of the time step (s).</xs:documentation>
+	  </xs:annotation>
+	</xs:element>
+	<xs:element name="dimensions" type="xs:integer">
+	  <xs:annotation>
+	    <xs:documentation>Number of dimensions (excluding the time-dimension).</xs:documentation>
+	  </xs:annotation>
+	</xs:element>
+
+	<xs:element name="boundingbox" type="boundingboxType"/>
+
+      </xs:sequence>
+    </xs:complexType>
+
+
+    <!--  Root of GenFoo input tree -->    
+    <xs:element name="genfooParams">
+      <xs:annotation>
+	<xs:documentation>GenFoo input parameters.</xs:documentation>
+      </xs:annotation>
+      <xs:complexType>
+	<xs:sequence>
+	  <xs:element name="library" type="libraryType"/>
+	  <xs:element name="factory" type="factoryType"/>
+	  <xs:element name="domain" type="domainType"/>
+	</xs:sequence>
+      </xs:complexType>
+    </xs:element>
+
+</xs:schema>
+

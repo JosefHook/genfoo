@@ -1,0 +1,40 @@
+#
+# General form for the Fokker-Planck equation
+#
+# u_t = div(  - A*u + 0.5* div(B^2*u)   )
+#
+#
+
+V = FiniteElement("Lagrange",interval,2) #scalar in R^1
+
+u = TrialFunction(V)
+u0 = Coefficient(V)
+v = TestFunction(V)
+A = Coefficient(V)
+B = Coefficient(V)
+
+dt = Constant(interval)
+
+
+
+# Drift term
+# -A*u
+
+# Diffusion term
+# 0.5*div(B^2*u) =  B.div(B)*u + 0.5*B^TB.grad(u)
+
+#
+# The 1D version could not handle the general variational form:
+# -dt*dot(A*u0,grad(v))*dx +  dt*( dot(u0*dot(B,div(B)),grad(v)) + 0.5*dot(dot(B.T*B,grad(u0)),grad(v))  )*dx
+# 
+#  
+#
+ 
+a = v*u*dx + 0.5*(   -dt*A*u*v.dx(0)*dx +  dt*( u*B*B.dx(0)*v.dx(0) + 0.5*B*B*u.dx(0)*v.dx(0) )*dx )
+
+
+
+L = v*u0*dx - 0.5*(  -dt*A*u0*v.dx(0)*dx +  dt*( u0*B*B.dx(0)*v.dx(0) + 0.5*B*B*u0.dx(0)*v.dx(0) )*dx )
+
+# Goal function to minimize
+#M = u*dx

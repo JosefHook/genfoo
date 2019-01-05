@@ -1,0 +1,13 @@
+NAME=hdf5-1.8.5-patch1
+SOURCE=http://www.hdfgroup.org/ftp/HDF5/current/src/
+PACKING=.tar.gz
+BUILDCHAIN=autotools
+CLEANBUILD=yes
+
+
+
+
+package_specific_setup () {
+    ./configure --prefix=${INSTALL_PATH}
+}
+

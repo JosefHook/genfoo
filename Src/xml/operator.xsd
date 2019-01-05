@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema 
+   xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   elementFormDefault="qualified">
+  
+
+  <xs:complexType name="stringVector">
+    <xs:sequence>
+      <xs:element name="value" type="xs:string" minOccurs="1" maxOccurs="1"/>
+    </xs:sequence>
+    <xs:attribute name="index" type="xs:integer" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="stringMatrix">
+    <xs:sequence>
+      <xs:element name="value" type="xs:string" minOccurs="1" maxOccurs="1"/>
+    </xs:sequence>
+    <xs:attribute name="indexColumn" type="xs:integer" use="required"/>
+    <xs:attribute name="indexRow" type="xs:integer" use="required"/>
+  </xs:complexType>
+
+  <xs:element name="Operator">
+    <xs:annotation>
+      <xs:documentation>
+Fokker-Planck/Monte Carlo operator for GenFoo.
+Allows the user to supply algebraic expressions for the drift, diffusion and source using C syntax.
+
+/author Josef Hook and Thomas Johnson
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:all>
+
+	<xs:element name="Documentation" type="xs:string" minOccurs="0">
+	  <xs:annotation>
+	    <xs:documentation>For documentation of the operator.</xs:documentation>
+	  </xs:annotation>
+	</xs:element>
+
+	<xs:element name="Dimensions" type="xs:integer" minOccurs="1" maxOccurs="1">
+	  <xs:annotation>
+	    <xs:documentation>Number of dimensions.</xs:documentation>
+	  </xs:annotation>
+	</xs:element>
+
+	<xs:element name="Drift" minOccurs="0" maxOccurs="1">
+	  <xs:annotation>
+	    <xs:documentation>Monte Carlo drift, e.g. x[0]^2 -2*x[1]</xs:documentation>
+	  </xs:annotation>
+	  <xs:complexType>
+	    <xs:sequence>
+	      <xs:element name="code" type="xs:string" minOccurs="0"/>
+	      <xs:element name="component" type="stringVector" minOccurs="0" maxOccurs="unbounded"/>
+	    </xs:sequence>
+	  </xs:complexType>
+	</xs:element>
+
+	<xs:element name="Diffusion" minOccurs="0" maxOccurs="1">
+	  <xs:annotation>
+	    <xs:documentation>Diffusion, e.g. x[0]^2 -2*x[1]</xs:documentation>
+	  </xs:annotation>
+	  <xs:complexType>
+	    <xs:sequence>
+	      <xs:element name="code" type="xs:string" minOccurs="0"/>
+	      <xs:element name="component" type="stringMatrix" minOccurs="0" maxOccurs="unbounded"/>
+	    </xs:sequence>
+	  </xs:complexType>
+	</xs:element>
+
+	<xs:element name="Source" minOccurs="0" maxOccurs="1">
+	  <xs:annotation>
+	    <xs:documentation>Source, e.g. x[0]^2 -2*x[1]</xs:documentation>
+	  </xs:annotation>
+	  <xs:complexType>
+	    <xs:sequence>
+	      <xs:element name="code" type="xs:string" minOccurs="0"/>
+	      <xs:element name="value" type="xs:string" minOccurs="0"/>
+	    </xs:sequence>
+	  </xs:complexType>
+	</xs:element>
+
+	<xs:element name="InitialCondition" minOccurs="1" maxOccurs="1">
+	  <xs:annotation>
+	    <xs:documentation>InitialCondition, e.g. x[0]^2 -2*x[1]</xs:documentation>
+	  </xs:annotation>
+	  <xs:complexType>
+	    <xs:sequence>
+	      <xs:element name="code" type="xs:string" minOccurs="0"/>
+	      <xs:element name="value" type="xs:string" minOccurs="0"/>
+	    </xs:sequence>
+	  </xs:complexType>
+	</xs:element>
+	
+	<xs:element name="Include" minOccurs="0" maxOccurs="unbounded">
+	  <xs:annotation>
+	    <xs:documentation>Include libraries</xs:documentation>
+	  </xs:annotation>
+	  <xs:complexType>
+	    <xs:all>
+	      <xs:element name="libraryName" type="xs:string"  minOccurs="0" maxOccurs="unbounded"/>
+	    </xs:all>
+	  </xs:complexType>
+	</xs:element>
+
+	<xs:element name="Private" minOccurs="0" maxOccurs="1">
+	  <xs:annotation>
+	    <xs:documentation>List of variables and methods that can be used in the operator</xs:documentation>
+	  </xs:annotation>
+	  <xs:complexType>
+	    <xs:sequence>
+
+	      <xs:element name="variable" minOccurs="0" maxOccurs="unbounded">
+		<xs:annotation>
+		  <xs:documentation>Definition of local variables that can be used in the operator</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+		  <xs:all>
+		    <xs:element name="name"          type="xs:string"  minOccurs="1"/>
+		    <xs:element name="value"         type="xs:string"  minOccurs="0"/>
+		    <xs:element name="documentation" type="xs:string"  minOccurs="0"/>
+		  </xs:all>
+		  <xs:attribute name="static" type="xs:boolean"/>
+		  <xs:attribute name="const"  type="xs:boolean"/>
+		  <xs:attribute name="type"   type="xs:string" use="required"/>
+		  <xs:attribute name="isVector" type="xs:boolean" use="optional" default="false"/>
+		  <xs:attribute name="unit"   type="xs:string" use="optional"/>
+		</xs:complexType>
+	      </xs:element>
+
+	      <xs:element name="function" minOccurs="0" maxOccurs="unbounded">
+		<xs:complexType>
+		  <xs:all>
+		    <xs:element name="documentation" type="xs:string"  minOccurs="0"/>
+		    <xs:element name="name"       type="xs:string" minOccurs="1"/>
+		    <xs:element name="input"      type="xs:string" minOccurs="0"/>
+		    <xs:element name="code"       type="xs:string" minOccurs="0"/>
+		  </xs:all>
+		  <xs:attribute name="type" type="xs:string" use="required"/>
+		  <xs:attribute name="unit" type="xs:string"/>
+		</xs:complexType>
+	      </xs:element>
+
+	    </xs:sequence>
+	  </xs:complexType>
+	</xs:element>
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

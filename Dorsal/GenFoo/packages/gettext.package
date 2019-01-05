@@ -1,0 +1,10 @@
+NAME=gettext-0.18
+SOURCE=http://ftp.gnu.org/gnu/gettext/
+PACKING=.tar.gz
+BUILDCHAIN=autotools
+CLEANBUILD=yes
+
+
+package_specific_setup () {
+    ./configure --enable-static --prefix=${INSTALL_PATH}
+}

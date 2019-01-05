@@ -1,0 +1,11 @@
+NAME=H5Part-1.6.5
+SOURCE=https://codeforge.lbl.gov/frs/download.php/358/
+PACKING=.tar.gz
+BUILDCHAIN=autotools
+CLEANBUILD=yes
+
+
+package_specific_setup () {
+    ./configure --enable-64  --prefix=${INSTALL_PATH} --enable-parallel CFLAGS=-I/usr/include/mpi
+}
+

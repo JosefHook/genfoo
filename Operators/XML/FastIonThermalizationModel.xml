@@ -1,0 +1,452 @@
+<?xml version="1.0"?>
+<Operator> 
+
+
+<Private>
+
+
+
+
+       <variable type="double" static="true" const="true">
+          <documentation> static param</documentation>
+          <name> Ze </name>
+          <type> double </type>
+	  <value> -1.0 </value>
+	  <unit> 1 </unit>
+       </variable>
+
+       <variable type="double" static="true" const="true">
+          <documentation> static param</documentation>
+          <name> Zp </name>
+          <type> double </type>
+	  <value> 1.0 </value>
+	  <unit> 1 </unit>
+       </variable>
+
+
+       <variable type="double" static="true" const="true">
+          <documentation> static param</documentation>
+          <name> Z </name>
+          <type> double </type>
+	  <value> 1.0 </value>
+	  <unit> 1 </unit>
+       </variable>
+
+
+
+
+       <variable type="double" static="true" const="true">
+          <documentation> static param</documentation>
+          <name> np </name>
+          <type> double </type>
+	  <value> 1e20 </value>
+	  <unit> 1 </unit>
+       </variable>
+
+
+
+       <variable type="double" static="true" const="true">
+          <documentation> static param</documentation>
+          <name> ne </name>
+          <type> double </type>
+	  <value> 1e20 </value>
+	  <unit> 1 </unit>
+       </variable>
+
+
+
+
+       <variable type="double" static="true" const="true">
+          <documentation> static param</documentation>
+          <name> nh </name>
+          <type> double </type>
+	  <value> 0.02*1e20 </value>
+	  <unit> 1 </unit>
+       </variable>
+
+
+
+       <variable type="double" static="true" const="true">
+          <documentation> static param</documentation>
+          <name> kb </name>
+          <type> double </type>
+	  <value> 1.3807e-23 </value>
+	  <unit> 1 </unit>
+       </variable>
+
+
+
+       <variable type="double" static="true" const="true">
+          <documentation> static param</documentation>
+          <name> Te </name>
+          <type> double </type>
+	  <value> 20e3*1.1604505e4 </value>
+	  <unit> 1 </unit>
+       </variable>
+
+
+       <variable type="double" static="true" const="true">
+          <documentation> static param</documentation>
+          <name> Tp </name>
+          <type> double </type>
+	  <value> 20e3*1.1604505e4 </value>
+	  <unit> 1 </unit>
+       </variable>
+
+
+
+       <variable type="double" static="true" const="true">
+          <documentation> static param</documentation>
+          <name> T </name>
+          <type> double </type>
+	  <value> 20e3*1.1604505e4 </value>
+	  <unit> 1 </unit>
+       </variable>
+
+
+
+       <variable type="double" static="true" const="true">
+          <documentation> static param</documentation>
+          <name> mp </name>
+          <type> double </type>
+	  <value> 1.6726e-27 </value>
+	  <unit> 1 </unit>
+       </variable>
+
+
+       <variable type="double" static="true" const="true">
+          <documentation> static param</documentation>
+          <name> mee </name>
+          <type> double </type>
+	  <value> 9.1094e-31 </value>
+	  <unit> 1 </unit>
+       </variable>
+
+
+       <variable type="double" static="true" const="true">
+          <documentation> static param</documentation>
+          <name> m </name>
+          <type> double </type>
+	  <value> mp*2 </value>
+	  <unit> 1 </unit>
+       </variable>
+
+
+
+       <variable type="double" static="true" const="true">
+          <documentation> static param</documentation>
+          <name> q </name>
+          <type> double </type>
+	  <value>  1.6022e-19 </value>
+	  <unit> 1 </unit>
+       </variable>
+
+
+
+
+       <variable type="double" static="true" const="true">
+          <documentation> static param</documentation>
+          <name> eps0 </name>
+          <type> double </type>
+	  <value>  8.8542e-12 </value>
+	  <unit> 1 </unit>
+       </variable>
+
+       <variable type="double" static="true" const="true">
+          <documentation> static param</documentation>
+          <name> CONV </name>
+          <type> double </type>
+	  <value> 1.173702880724304e-015 </value>
+	  <unit> 1 </unit>
+       </variable>
+
+
+       <variable type="double" static="true" const="true">
+          <documentation> static param</documentation>
+          <name> loglambda </name>
+          <type> double </type>
+	  <value>  std::log( CONV*3/(2*Z*Zp*std::pow(q,3))*sqrt( std::pow(kb*T,3)/(M_PI*np)) ) </value>
+	  <unit> 1 </unit>
+       </variable>
+
+
+       <variable type="double" static="true" const="true">
+          <documentation> static param</documentation>
+          <name> lp </name>
+          <type> double </type>
+	  <value> sqrt(mp/(2*kb*Tp)) </value>
+	  <unit> 1 </unit>
+       </variable>
+
+
+
+       <variable type="double" static="true" const="true">
+          <documentation> static param</documentation>
+          <name> le </name>
+          <type> double </type>
+	  <value> sqrt(mee/(2*kb*Te)) </value>
+	  <unit> 1 </unit>
+       </variable>
+
+
+
+       <variable type="double" static="true" const="true">
+          <documentation> static param</documentation>
+          <name> vth </name>
+          <type> double </type>
+	  <value> 1/lp </value>
+	  <unit> 1 </unit>
+       </variable>
+
+
+
+       <variable type="double" static="true" const="true">
+          <documentation> static param</documentation>
+          <name> lelp </name>
+          <type> double </type>
+	  <value> sqrt( mee*Tp/(mp*Te) ); </value>
+	  <unit> 1 </unit>
+       </variable>
+
+       <variable type="double" static="true" const="true">
+          <documentation> static param</documentation>
+          <name> p1 </name>
+          <type> double </type>
+	  <value> q/m </value>
+	  <unit> 1 </unit>
+       </variable>
+
+
+       <variable type="double" static="true" const="true">
+          <documentation> static param</documentation>
+          <name> p2 </name>
+          <type> double </type>
+	  <value> std::pow(Z,2)*loglambda </value>
+	  <unit> 1 </unit>
+       </variable>
+
+
+       <variable type="double" static="true" const="true">
+          <documentation> static param</documentation>
+          <name> p3 </name>
+          <type> double </type>
+	  <value>q/eps0 </value>
+	  <unit> 1 </unit>
+       </variable>
+
+
+       <variable type="double" static="true" const="true">
+          <documentation> static param</documentation>
+          <name> p4 </name>
+          <type> double </type>
+	  <value>np*q/eps0 </value>
+	  <unit> 1 </unit>
+       </variable>
+
+
+       <variable type="double" static="true" const="true">
+          <documentation> static param</documentation>
+          <name> p5 </name>
+          <type> double </type>
+	  <value>ne*q/eps0 </value>
+	  <unit> 1 </unit>
+       </variable>
+
+
+
+       <variable type="double" static="true" const="true">
+          <documentation> static param</documentation>
+          <name> Cp </name>
+          <type> double </type>
+	  <value> (8.0*M_PI*p2*std::pow(Zp,2))*(p1*p4)*(p1*p3)/( std::pow(4.0*M_PI,2)) </value>
+	  <unit> 1 </unit>
+       </variable>
+
+
+
+       <variable type="double" static="true" const="true">
+          <documentation> static param</documentation>
+          <name> Ce </name>
+          <type> double </type>
+	  <value>(8.0*M_PI*p2*std::pow(Ze,2))*(p1*p5)*(p1*p3)/( std::pow(4.0*M_PI,2)) </value>
+	  <unit> 1 </unit>
+       </variable>
+
+	 
+</Private>
+
+    <Dimensions>
+	    2
+    </Dimensions>
+<!--
+
+function [E_NBI, E_NBI_keV, electron, CollisionTimeScale, mass, Zspecies, ...
+          dens, Temp, T, N, subsets, timesteps, dt, ContourTicks]=getSimulationP
+arams
+
+
+
+electron = 1.6022e-19;
+E_NBI_keV = 100;
+E_NBI = E_NBI_keV * 1e3 * electron;
+
+CollisionTimeScale = 1
+% Order of species: ion, electron
+mass = [1.6726e-27, 9.1094e-31]; %%Mass proton, %%Mass electron
+Zspecies = [1, -1];
+dens = [3e19, 3e19];
+Temp = [4e3, 4e3]; % 5 keV
+
+
+T =0.6;
+
+
+
+
+
+
+
+function [a, b, g] = abgSpitzer(v, Cf, lf, mf, m)
+
+a = zeros(size(v));
+b = a; 
+g = a;
+
+
+% loop over species
+for i=1:length(Cf)
+
+x = lf(i).*v; 
+    
+phi = erf(x);
+phip = 2./sqrt(pi).*exp(- x.^2);
+
+G = ( phi - x.*phip )./( 2.*x.^2 );
+
+glocal  = Cf(i)./v.*(  phi - G  );
+
+a = a - Cf(i).*lf(i).^2.*(  1 + m./mf(i) ).*G  + glocal./(2.*v);
+
+b = b + Cf(i)./v.*G;
+
+g = g + glocal;
+
+        
+end
+
+
+
+
+    Local store velocity and-0.99 pitch
+    Vel = sqrt(2.*X(:,1)./mass(1));
+    
+    Get Coefficients
+   [alpha, beta, gamma] = abgSpitzer(Vel, Cf, lf, mass, mass(1));  
+ 
+   nuG = gamma./( 2.*Vel.^2 );
+
+ 
+   drift = mass(1)*( ( alpha.*Vel + 1/2.*beta  ).*dt);
+   diffusion = mass(1).*( sqrt( Vel.^2.*beta )  );
+ 
+   dE = drift + diffusion.*dWx(:,idx);
+   X(:,1) = X(:, 1)  + dE;
+   X(:,2) = X(:, 2) -X(:,2).*nuG.*dt + sqrt( (1-X(:,2).^2).*nuG  ).*dWy(:,idx);
+   
+-->
+
+
+
+    <Drift>
+      <code>
+	long double Gp =( erf(x[0]) - 0.2e1*x[0] 
+	*exp(  -std::pow(x[0],2) )
+	*std::pow(M_PI,(-0.1e1/0.2e1)) )
+	/(std::pow(x[0],2)+ 1e-39)/0.2e1;
+	
+	long double Ge =(erf(lelp*x[0]) - 0.2e1*lelp*x[0]
+	*exp(-std::pow(lelp*x[0],2))
+	*std::pow(M_PI,(-0.1e1/0.2e1))  )
+	/std::pow(lelp,2)/(std::pow(x[0],2)+ 1e-39)/0.2e1; 
+	
+	long double gamma =  (   (Cp/vth)/(x[0] +1e-39)    )*( erf(x[0]) - Gp   ) 
+	+ ( (Ce/vth)/(x[0] + 1e-39)  )*( erf(lelp*x[0]) - Ge   );  
+	
+	long double beta = ((Cp/vth)/(x[0] + 1e-39))*Gp + ((Ce/vth)/(x[0] + 1e-39))*Ge;
+	
+	//   long double alpha = -Cp*std::pow(lp,2.0)*( 1.0 + m/mp )*Gp 
+	//  -Ce*std::pow(le,2.0)*( 1.0 + m/mee )*Ge 
+	// + 1/( 2.0*vth*x[0] )*gamma;
+	
+	long double alpha  = -Cp*std::pow(lp,2)*( 1.0 + m/mp )*Gp
+	-Ce*std::pow(le,2)*(1.0  + m/mee )*Ge 
+	+ Cp/(2.0*std::pow(vth*x[0],2)  + 1e-39 )*( erf(x[0]) -  Gp  ) 
+	+ Ce/(2.0*std::pow(vth*x[0],2) +1e-39 )*( erf(lelp*x[0])  - Ge  );
+
+
+
+
+       </code>
+	<component index="0">
+	<value> alpha*( std::sqrt( 2.*x[0]/mp ) ) + 0.5*beta</value>
+	</component>
+	<component index ="1">
+	<value>  -x[1]*gamma/( 2.0*std::pow( std::sqrt(2.*x[0]/mp),2) ) </value>
+	</component>
+    </Drift>
+
+    <Diffusion>
+   <code>
+	long double Gp =( erf(x[0]) - 0.2e1*x[0] 
+	*exp(  -std::pow(x[0],2) )
+	*std::pow(M_PI,(-0.1e1/0.2e1)) )
+	/(std::pow(x[0],2)+ 1e-39)/0.2e1;
+	
+	long double Ge =(erf(lelp*x[0]) - 0.2e1*lelp*x[0]
+	*exp(-std::pow(lelp*x[0],2))
+	*std::pow(M_PI,(-0.1e1/0.2e1))  )
+	/std::pow(lelp,2)/(std::pow(x[0],2)+ 1e-39)/0.2e1; 
+	
+	long double gamma =  (   (Cp/vth)/(x[0] +1e-39)    )*( erf(x[0]) - Gp   ) 
+	+ ( (Ce/vth)/(x[0] + 1e-39)  )*( erf(lelp*x[0]) - Ge   );  
+	
+	long double beta = ((Cp/vth)/(x[0] + 1e-39))*Gp + ((Ce/vth)/(x[0] + 1e-39))*Ge;
+	
+	//   long double alpha = -Cp*std::pow(lp,2.0)*( 1.0 + m/mp )*Gp 
+	//  -Ce*std::pow(le,2.0)*( 1.0 + m/mee )*Ge 
+	// + 1/( 2.0*vth*x[0] )*gamma;
+	
+	long double alpha  = -Cp*std::pow(lp,2)*( 1.0 + m/mp )*Gp
+	-Ce*std::pow(le,2)*(1.0  + m/mee )*Ge 
+	+ Cp/(2.0*std::pow(vth*x[0],2)  + 1e-39 )*( erf(x[0]) -  Gp  ) 
+	+ Ce/(2.0*std::pow(vth*x[0],2) +1e-39 )*( erf(lelp*x[0])  - Ge  );
+
+
+//	cout &lt;&lt; "HERE " &lt;&lt; sqrt( (1-std::pow(x[1],2)) &lt;&lt; endl;
+       </code>
+
+
+	<component indexRow="0" indexColumn="0">
+	  <value> mp*( sqrt( std::pow(  std::sqrt(2.*x[0]/mp) ,2)*beta )  ) </value>
+	</component>
+	<component indexRow="1" indexColumn="1">
+	  <value> sqrt( (1-std::pow(x[1],2))*gamma/( 2.*std::pow(  std::sqrt(2.*x[1]/mp),2) )  )</value>
+	</component>
+    </Diffusion>
+
+    <Source>
+      <value>      0.0 </value>
+    </Source>
+    <!-- We need to model a dirac in s_0 , v_0 as a gaussian -->
+    <!-- FEniCS support dirac sources but the Monte carlo factory does not -->
+
+    <!--  x[0] == Energy, x[1] == Pitch-angle -->
+    <InitialCondition>
+      <value>
+	10.0*1/(2.0*M_PI)*sqrt(1/(2.0*M_PI))*exp(-( (x[0]-0.0)*(x[0]-0.0) )/0.2 )*std::pow(x[0],2)  ;
+
+<!--      20.0*1/(2.0*M_PI)*sqrt(1/(2.0*M_PI))*exp(-( std::pow(x[0]-5.0,2) + std::pow(x[1]-0.8,2) )/0.2 )-->
+      </value>
+    </InitialCondition>
+
+</Operator>

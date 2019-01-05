@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+For testing the GenFoo output specifications using XML
+
+-->
+<GenFooOutputSpecification
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:noNamespaceSchemaLocation="../outputSpec.xsd"
+   programmingLanguage="c++">
+
+  <include>#include &lt;cmath&gt;</include>
+
+  <integralMeasure name="energyOfMinorRadius">
+    <geometry>
+      <dimensions>    2 </dimensions>
+      <gridSize>    200 </gridSize>
+      <minValue>     -1 </minValue>
+      <maxValue>      1 </maxValue>
+    </geometry>
+    <kernelCode>
+      //add code...
+      double energy=x[0];
+      val[0] = energy;
+    </kernelCode>
+  </integralMeasure>
+  
+  <integralMeasure name="vParalellOfMinorRadiusAtProtonMass">
+    <documentation>
+Parallel fluid velocity as a function of the minor radius normalised to $\sqrt ( m / m_p)$ (the square root of the ratio of the particle mass to the proton mass).
+</documentation>
+    <geometry>
+      <dimensions>    2 </dimensions>
+      <gridSize>    200 </gridSize>
+      <minValue>     -1 </minValue>
+      <maxValue>      1 </maxValue>
+    </geometry>
+    <kernelCode>
+      double mass=1.6726e-27;
+      double vel=std::sqrt(2.0*x[0]/mass);
+      double pitch=x[1];
+      return vel*pitch;
+    </kernelCode>
+  </integralMeasure>
+  
+  <integralMeasure name="distributioninEnergyAndMinorRadius" type="contraction">
+    <documentation>
+Distirbution function f(E,r)
+</documentation>
+    <geometry>
+      <dimensions>    0   2 </dimensions>
+      <gridSize>    200  55 </gridSize>
+      <minValue>     -1   0 </minValue>
+      <maxValue>      1   1 </maxValue>
+    </geometry>
+    <kernelCode>
+      return 1.0;
+    </kernelCode>
+  </integralMeasure>
+
+  <integralMeasure name="distributioninEnergyAndMinorRadius" type="cumulative">
+    <documentation>
+Distirbution function f(E,r)
+</documentation>
+    <geometry fileName="gridDescriptionFile_energy_radius.dat">
+      <dimensions>  0  2 </dimensions>
+    </geometry>
+    <kernelCode>
+      return 1.0;
+    </kernelCode>
+  </integralMeasure>
+</GenFooOutputSpecification>

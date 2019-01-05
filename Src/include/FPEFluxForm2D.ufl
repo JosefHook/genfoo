@@ -1,0 +1,23 @@
+#
+# Fokker-Planck equation on (variance) Flux form
+#
+# u_t = div(  - A*u + 0.5*SS.grad(u)   )
+# where SS = BB^T
+#
+V = FiniteElement("Lagrange",triangle,2) #scalar in R^2
+Q = VectorElement("Lagrange",triangle,2) #vector in R^2
+T = TensorElement("Lagrange",triangle,2) #Matrix in R^2
+
+u = TrialFunction(V)
+u0 = Coefficient(V)
+v = TestFunction(V)
+A = Coefficient(Q)
+SS = Coefficient(T) # variance matrix sigma^2
+
+dt = Constant(triangle)
+
+
+# Crank-Nicholson in time
+a = v*u*dx + 0.5*(   -dt*dot(A*u,grad(v))*dx + dt*(0.5*dot(dot(SS,grad(u)),grad(v))  )*dx    )
+L = v*u0*dx - 0.5*(  -dt*dot(A*u0,grad(v))*dx +  dt*( 0.5*dot(dot(SS,grad(u0)),grad(v))  )*dx )
+

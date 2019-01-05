@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Operator
+   xmlns:xs="http://www.w3.org/2001/XMLSchema"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="operator.xsd">
+
+  <Documentation>
+ICRF and collisionoperator. 
+UNDER DEVELOPMENT!
+
+Coordinates:
+- x[0] the Energy normalised to the on axis temperature of the simulated species.
+- x[1] the pitch v_parallel / v.
+  </Documentation>
+
+    <Private>
+       <variable type="int" static="true" const="true">
+          <documentation>Simulated species</documentation>
+          <name>  indexSimulatedSpecies </name>
+	  <value> 0 </value>
+       </variable>
+       <variable type="int" static="true" const="true" unit="kg" isVector="true">
+          <documentation> Masses of all plasma species</documentation>
+          <name> mass </name>
+	  <value> 9.1e-31/1.6726e-27 , 2.0*1.6726e-27 , 3.0*1.6726e-27 , 4.0*1.6726e-27</value>
+       </variable>
+       <variable type="int" static="true" const="true" unit="C" isVector="true">
+          <documentation>Charges of all plasma species</documentation>
+          <name> charge </name>
+	  <value> -1.0*1.6022e-19 , 1.0*1.6022e-19 , 1.0*1.6022e-19 , 2.0*1.6022e-19</value>
+       </variable>
+       <variable type="double" static="true" const="true" unit="m**-3" isVector="true">
+          <documentation>Densities of all plasma species</documentation>
+          <name>density</name>
+	  <value> 1.06e20 , 0.5e20 , 0.5e20 , 3.0e18 </value>
+       </variable>
+       <variable type="double" static="true" const="true" unit="J" isVector="true">
+          <documentation> Temperatures of all plasma species</documentation>
+          <name> temperature </name>
+	  <value> 20.0e3*1.6022e-19 , 20.0e3*1.6022e-19 , 20.0e3*1.6022e-19 , 20.0e3*1.6022e-19 </value>
+       </variable>
+       <variable type="double" static="true" const="true" unit="T">
+          <documentation>Magnetic field at the magnetic axis</documentation>
+          <name> B0 </name>
+	  <value> 5.6 </value>
+       </variable>
+       <variable type="double" static="true" const="true" unit="m">
+          <documentation>Major radius at the magnetic axis</documentation>
+          <name> R0 </name>
+	  <value> 7.5 </value>
+       </variable>
+       <variable type="double" static="true" const="true" unit="m">
+          <documentation>Minor radius</documentation>
+          <name> aminor </name>
+	  <value> 7.5/3.0 </value>
+       </variable>
+       <variable type="double" static="true" const="true" unit="m">
+          <documentation>Larmor radius</documentation>
+          <name> rhoLarmor </name>
+	  <value> 0.01 </value>
+       </variable>
+       <variable type="double" static="true" const="true" unit="V/m">
+          <documentation>Toroidal electric field</documentation>
+          <name> Etoroidal </name>
+	  <value> 1e-4 </value>
+       </variable>
+       <variable type="double" static="true" const="true" unit="T">
+          <documentation>Poloidal magnetic field</documentation>
+          <name> Bpoloidal </name>
+	  <value> 0.2 </value>
+       </variable>
+       <variable type="double" static="true" const="true" unit="Hz">
+          <documentation>ICRF wave frequency</documentation>
+          <name> ICfrequency </name>
+	  <value> 65e6 </value>
+       </variable>
+       <variable type="double" static="true" const="true" unit="V/m">
+          <documentation>ICRF wave, E-field amplitude</documentation>
+          <name> ICEplus </name>
+	  <value> 2000.0 </value>
+       </variable>
+       <variable type="double" static="true" const="true" unit="1/m">
+          <documentation>ICRF wave kperp</documentation>
+          <name> ICkperp </name>
+	  <value> 20.0 </value>
+       </variable>
+       <variable type="double" static="true" const="true">
+          <documentation>ICRF wave, harmonic number of interaction </documentation>
+          <name> ICnHarmonic </name>
+	  <value> 2.0 </value>
+       </variable>
+
+<!--
+========================================================================
+FUNCTIONS: 
+========================================================================
+-->
+       <function type="double">
+          <documentation>Check if species j is the electron species</documentation>
+          <name> isElectron </name>
+	  <code>
+    return mass[j] &lt; 1.0e-27;
+    </code>
+	  <input> int j </input>
+       </function>
+
+       <function type="double">
+          <documentation>Electron Density</documentation>
+          <name> electronDensity </name>
+	  <code>
+    for (int j=0;j &lt; mass.size() ; j++){
+      if ( isElectron(j) ){
+        return density[j];
+      }
+    }
+    return 0.0;
+    </code>
+       </function>
+       <function type="double">
+          <documentation>Effective Charge</documentation>
+          <name> Zeff </name>
+	  <code>
+    double nz2=0.0;
+    for (int j=0;j &lt; charge.size() ; j++){
+      if ( not(isElectron(j)) ){
+       nz2 += density[j]*std::pow(charge[j],2);
+      }
+    }
+    return nz2 / (1.6022e-19*electronDensity());
+    </code>
+       </function>
+
+       <function type="double">
+          <documentation>Thermal velocity</documentation>
+          <name> velocityThermal </name>
+	  <code> return std::sqrt(2.0*temperature[indexSpeices]/mass[indexSpeices]);</code>
+	  <input>int indexSpeices</input>
+       </function>
+
+       <function type="double">
+          <documentation>Thermal ion larmor radius at the magneitc axis</documentation>
+          <name> rhoLarmorThermalAtAxis </name>
+	  <code> return charge[indexSpeices] * B0 / (mass[indexSpeices] * velocityThermal(indexSpeices));</code>
+	  <input>int indexSpeices</input>
+       </function>
+
+       <function type="double">
+          <documentation>Coloumb Logarithm</documentation>
+          <name>coloumbLogarithm</name>
+	  <code>
+   double lnT = std::log(temperature[indexSpeices]);
+   double lnDens = std::log(electronDensity());
+   if (isElectron(indexSpeices)){
+     return 15.2 - 0.5*lnDens + lnT;
+   } else {
+     return 17.3 - 0.5*lnDens + 1.5*lnT;
+   }
+</code>
+	  <input>int indexSpeices</input>
+       </function>
+
+       <function type="double">
+          <documentation>Function G(x) defined in Stix, page 509</documentation>
+          <name> Stix_G </name>
+	  <code> return (erfc(x) + exp(-x*x)*2.0/sqrt(M_PI)) / (2.0*x);</code>
+	  <input>double x</input>
+       </function>
+
+       <function type="double">
+          <documentation>Collision parameter Cf (related to the collision frequency) defined in Stix, page 508</documentation>
+          <name> Stix_Cf </name>
+	  <code>
+    return (0.5/(M_PI*std::pow(8.85418782e-12,2))) *  std::pow(charge[j]*charge[jf]/mass[j],2)* coloumbLogarithm(jf);
+	  </code>
+	  <input>int j, int jf</input>
+       </function>
+
+       <function type="double">
+          <documentation>Chandrasekar collision frequency alpha_f, defined in Stix on page 508</documentation>
+          <name> Stix_alpha_f </name>
+	  <code>
+    double vth=velocityThermal(jf);
+    double x=v/vth;
+    double G=Stix_G(x);
+    double C=Stix_Cf(j,jf);
+    return (C/(vth*vth)) * (1.0-mass[j]/mass[jf]) * G;
+	  </code>
+	  <input> double v, int j, int jf </input>
+       </function>
+
+       <function type="double">
+          <documentation>Chandrasekar collision frequency beta_f, defined in Stix on page 508</documentation>
+          <name> Stix_beta_f </name>
+	  <code>
+    double vth=velocityThermal(jf);
+    double x=v/vth;
+    double G=Stix_G(x);
+    double C=Stix_Cf(j,jf);
+    return (C/v) * G;
+	  </code>
+	  <input> double v, int j, int jf </input>
+       </function>
+
+       <function type="double">
+          <documentation>Chandrasekar collision frequency gamma_f, defined in Stix on page 508</documentation>
+          <name> Stix_gamma_f </name>
+	  <code>
+    double vth=velocityThermal(jf);
+    double x=v/vth;
+    double G=Stix_G(x);
+    double phi=erfc(x);
+    double C=Stix_Cf(j,jf);
+    return (C/v) * (phi-G);
+	  </code>
+	  <input> double v, int j, int jf </input>
+       </function>
+
+       <function type="double">
+          <documentation>Chandrasekar collision frequency alpha, defined in Stix on page 508</documentation>
+          <name> Stix_alpha </name>
+	  <code>
+    double fun=0.0;
+    for (int jf=0;jf &lt; charge.size() ; jf++){
+      fun += Stix_alpha_f(v,j,jf);
+    }
+    return fun;
+    </code>
+	  <input> double v, int j</input>
+       </function>
+
+       <function type="double">
+          <documentation>Chandrasekar collision frequency beta, defined in Stix on page 508</documentation>
+          <name> Stix_beta </name>
+	  <code>
+    double fun=0.0;
+    for (int jf=0;jf &lt; charge.size() ; jf++){
+      fun += Stix_beta_f(v,j,jf);
+    }
+    return fun;
+    </code>
+	  <input> double v, int j</input>
+       </function>
+
+       <function type="double">
+          <documentation>Chandrasekar collision frequency gamma, defined in Stix on page 508</documentation>
+          <name> Stix_gamma </name>
+	  <code>
+    double fun=0.0;
+    for (int jf=0;jf &lt; charge.size() ; jf++){
+      fun += Stix_gamma_f(v,j,jf);
+    }
+    return fun;
+    </code>
+	  <input> double v, int j</input>
+       </function>
+
+       <function type="double">
+          <documentation>Orbit averaged quasilinear diffusion coefficient for ion cyclotron acceleration</documentation>
+          <name> diffsionIC_IperpIperp </name>
+	  <code>
+    double Omega0 = charge[j] * B0 / mass[j];
+    double Rres   = R0 * ICnHarmonic * Omega0 / (2.0*M_PI*ICfrequency);
+    double RmaxOrbit = R0 + aminor;
+    double Lambda = (1.0-std::pow(xi,2)) * RmaxOrbit / R0;
+    double RminOrbit = max(R0*Lambda, R0-aminor);
+    if (Rres &lt; RminOrbit | Rres &gt; RmaxOrbit){
+        return 0.0;
+    }
+    double energy = 0.5 * mass[j] * std::pow(v,2);
+    double kperpRho = ICkperp * rhoLarmorThermalAtAxis(j);
+    double Eeff = ICEplus; // dummy!!
+    double tauRF = 0.05; // dummy!!
+    double tauBounce = 1.0; // dummy!!
+    double vperp = v * std::sqrt(max(0.0,min( 1.0 , R0*Lambda/Rres )));
+
+    double diffusion_IperpIperp = 0.0;  //std::pow( 0.5 * charge[j] * vperp * Eeff * tauRF , 2) / tauBounce;
+
+    // Direction of operator
+    double delL = max(1e-6,Rres/R0-Lambda);
+    double dL_dE = delL/energy;
+//    double xi_res = std::sign(xi) * std::sqrt(delL*R0/Rres);
+//    double dL_dxi = -2.0*xi_res*Rres/R0;
+
+//    double dE_dIperp = 1.0;
+//    double dxi_Iperp = dE_dIperp * dL_dE / dL_dxi;
+
+
+    return diffusion_IperpIperp;
+	  </code>
+	  <input> double v, double xi, int j, double dE_dIperp2, double dxi_dIperp2</input>
+       </function>
+
+
+    </Private>
+
+
+    <Dimensions>
+	    2
+    </Dimensions>
+
+    <!--
+       Here the x[0] is the energy normalised to the thermal energy
+       and x[1] is the pitch angle.
+      -->
+    <Drift>
+        <code>
+   double vth   = velocityThermal(indexSimulatedSpecies);
+   double vel   = std::sqrt( 2.0 * temperature[indexSimulatedSpecies] * x[0] / mass[indexSimulatedSpecies] );
+   double alpha = Stix_alpha(vel , indexSimulatedSpecies);
+   double beta  = Stix_beta( vel , indexSimulatedSpecies);
+   double gamma = Stix_gamma(vel , indexSimulatedSpecies);
+	</code>
+	<component index="0">
+		<value> ( vel*alpha + 0.5*beta ) * mass[indexSimulatedSpecies] / vth </value>
+	</component>
+	<component index="1">
+		<value> -x[1] * gamma / (2*std::pow(vel,2)) </value>
+	</component>
+    </Drift>
+
+    <Diffusion>
+        <code>
+   double vth   = velocityThermal(indexSimulatedSpecies);
+   double vel   = std::sqrt( 2.0 * temperature[indexSimulatedSpecies] * x[0] / mass[indexSimulatedSpecies] );
+   double alpha = Stix_alpha(vel , indexSimulatedSpecies);
+   double beta  = Stix_beta( vel , indexSimulatedSpecies);
+   double gamma = Stix_gamma(vel , indexSimulatedSpecies);
+	</code>
+	<component indexColumn="0" indexRow="0">
+		<value> mass[indexSimulatedSpecies] * vel * std::sqrt(beta) / vth </value>
+	</component>
+	<component indexColumn="0" indexRow="0">
+		<value> std::sqrt(1.0-std::pow(x[1],2))</value>
+	</component>
+    </Diffusion>
+
+    <Source>
+      <value>  0.0 </value> 
+    </Source>
+
+    <InitialCondition>
+        <value> exp(-std::pow((x[0]-2.0)/0.2,2)) * exp(-std::pow((x[1]-2.0)/0.2,2))</value>
+    </InitialCondition>
+
+</Operator>
